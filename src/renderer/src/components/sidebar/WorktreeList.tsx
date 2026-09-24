@@ -35,6 +35,7 @@ import { useSidebarWorktreeSelection } from './worktree-list/navigation/use-sele
 import { useSidebarWorktreeSortOrder } from './worktree-list/listing/use-sort-order'
 import { useVisibleSidebarWorktrees } from './worktree-list/listing/use-visible-worktrees'
 import { useWorktreeStatusMutations } from './worktree-list/drag/use-status-mutations'
+import { useWorkspaceTagCommands } from './use-workspace-tag-commands'
 import { shouldFiltersHideAllRows } from './sidebar-empty-state-gate'
 import { buildWorktreeManualOrderCatalog } from './worktree-manual-order-catalog'
 
@@ -181,6 +182,7 @@ const WorktreeList = React.memo(function WorktreeList({
     sectionRows: rowModel.sectionRows,
     pinnedDisplayPolicy
   })
+  const tagCommands = useWorkspaceTagCommands()
   const statusMutations = useWorktreeStatusMutations({
     manualOrderCatalog,
     worktreeMap,
@@ -347,6 +349,7 @@ const WorktreeList = React.memo(function WorktreeList({
         onMoveWorktreesToStatusAtIndex={statusMutations.moveWorktreesToStatusAtIndex}
         onPinWorktree={statusMutations.pinWorktree}
         onPinWorktrees={statusMutations.pinWorktrees}
+        onTagWorktrees={tagCommands.addTagToIds}
         onDropWorktreesOnWorkspaceBoard={statusMutations.dropWorktreesOnWorkspaceBoard}
         workspaceBoardOpen={workspaceBoardOpen}
         onWorktreeCardClick={onWorktreeCardClick}

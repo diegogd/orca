@@ -76,7 +76,8 @@ function setup() {
       onMoveWorktreesToStatus: vi.fn(),
       onMoveWorktreesToStatusAtIndex: vi.fn(),
       onReorderWorktrees: vi.fn(),
-      onPinWorktrees: vi.fn()
+      onPinWorktrees: vi.fn(),
+      onTagWorktrees: vi.fn()
     },
     workspaceBoardOpen: false,
     onWorkspaceBoardDragPreviewStart: vi.fn(),
