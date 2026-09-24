@@ -6,8 +6,10 @@ import { useAllWorktrees } from '@/store/selectors'
 import { folderWorkspaceToWorktree } from '../../../../shared/folder-workspace-worktree'
 import type { Worktree } from '../../../../shared/worktree/types'
 import { getWorktreeHostIdentity } from '../../../../shared/worktree/host-qualified-identity'
+import { worktreeTagKey } from '../../../../shared/worktree/worktree-tags'
 import {
   collectWorkspaceTags,
+  planTagAdd,
   planTagDelete,
   planTagRename,
   planTagToggle,
@@ -20,6 +22,8 @@ export type WorkspaceTagCommands = {
   /** Current store rows for a captured selection; menus snapshot rows when they open. */
   resolveLive: (workspaces: readonly Worktree[]) => Worktree[]
   toggleTag: (workspaces: readonly Worktree[], tag: string) => Promise<void>
+  /** Adds the tag named by its case-insensitive key to the workspaces with these ids. */
+  addTagToIds: (workspaceIds: readonly string[], tagKey: string) => Promise<void>
   renameTag: (from: string, to: string) => Promise<void>
   deleteTag: (tag: string) => Promise<void>
   countTagged: (tag: string) => number
@@ -75,6 +79,22 @@ export function useWorkspaceTagCommands(): WorkspaceTagCommands {
       apply(planTagToggle(resolveLive(workspaces), tag)),
     [apply, resolveLive]
   )
+  const addTagToIds = useCallback(
+    (workspaceIds: readonly string[], tagKey: string) => {
+      const tag = allTags.find((entry) => worktreeTagKey(entry.tag) === tagKey)?.tag
+      if (!tag) {
+        return Promise.resolve()
+      }
+      const ids = new Set(workspaceIds)
+      return apply(
+        planTagAdd(
+          allWorkspaces.filter((entry) => ids.has(entry.id)),
+          tag
+        )
+      )
+    },
+    [allTags, allWorkspaces, apply]
+  )
   const renameTag = useCallback(
     (from: string, to: string) => apply(planTagRename(allWorkspaces, from, to)),
     [allWorkspaces, apply]
@@ -88,5 +108,5 @@ export function useWorkspaceTagCommands(): WorkspaceTagCommands {
     [allWorkspaces]
   )
 
-  return { allTags, resolveLive, toggleTag, renameTag, deleteTag, countTagged }
+  return { allTags, resolveLive, toggleTag, addTagToIds, renameTag, deleteTag, countTagged }
 }

@@ -48,4 +48,6 @@ export type WorktreeDropCommitContext = {
     dropIndex: number
   }) => void
   onPinWorktrees: (worktreeIds: readonly string[]) => void
+  /** Adds the tag with this case-insensitive key to the dropped workspaces. */
+  onTagWorktrees: (worktreeIds: readonly string[], tagKey: string) => void
 }
