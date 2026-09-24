@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { buildRows } from './build-rows'
 import type { Row } from './row-types'
 import { getGroupKeysForWorktree } from './worktree-group-keys'
-import { getTagGroupKey, UNTAGGED_GROUP_KEY } from './tag-groups'
+import { getTagGroupKey, narrowTagRevealKeys, UNTAGGED_GROUP_KEY } from './tag-groups'
 import { getRenderRowKey } from '../listing/render-row'
 import { getRenderRowSidebarKey } from '../navigation/render-row-lookup'
 import { repo, worktree } from '../../worktree-list-groups-test-fixtures'
@@ -109,9 +109,10 @@ describe('group by tag', () => {
   it('collects worktrees from different repos under one tag, and untagged last', () => {
     const rows = buildTagRows({ worktrees: [loose, web, api] })
 
-    expect(headers(rows).map((row) => row.label)).toEqual(['billing', 'UI', 'Untagged'])
+    // "Billing" wins over "billing" whichever workspace is listed first.
+    expect(headers(rows).map((row) => row.label)).toEqual(['Billing', 'UI', 'Untagged'])
     expect(sections(rows)).toEqual({
-      billing: ['web-billing', 'api-billing'],
+      Billing: ['web-billing', 'api-billing'],
       UI: ['web-billing'],
       Untagged: ['loose']
     })
@@ -160,5 +161,20 @@ describe('group by tag', () => {
   it('renders nothing extra when no workspace is tagged', () => {
     const rows = buildTagRows({ worktrees: [loose] })
     expect(headers(rows).map((row) => row.key)).toEqual([UNTAGGED_GROUP_KEY])
+  })
+
+  it('keeps the header spelling when sort order changes', () => {
+    const first = buildTagRows({ worktrees: [web, api] })
+    const second = buildTagRows({ worktrees: [api, web] })
+    expect(headers(first)[0].label).toBe(headers(second)[0].label)
+  })
+
+  it('opens only one collapsed tag section when revealing, and none if one is open', () => {
+    const keys = [getTagGroupKey('UI'), getTagGroupKey('billing'), 'host:local']
+    expect(narrowTagRevealKeys(keys, new Set([keys[0], keys[1]]))).toEqual([
+      'host:local',
+      getTagGroupKey('billing')
+    ])
+    expect(narrowTagRevealKeys(keys, new Set([keys[0]]))).toEqual(['host:local'])
   })
 })

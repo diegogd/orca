@@ -36,6 +36,7 @@ import { useSidebarWorktreeSortOrder } from './worktree-list/listing/use-sort-or
 import { useVisibleSidebarWorktrees } from './worktree-list/listing/use-visible-worktrees'
 import { useWorktreeStatusMutations } from './worktree-list/drag/use-status-mutations'
 import { useWorkspaceTagCommands } from './use-workspace-tag-commands'
+import { TagRenameDialogHost } from './TagRenameDialogHost'
 import { shouldFiltersHideAllRows } from './sidebar-empty-state-gate'
 import { buildWorktreeManualOrderCatalog } from './worktree-manual-order-catalog'
 
@@ -266,6 +267,7 @@ const WorktreeList = React.memo(function WorktreeList({
 
   return (
     <>
+      <TagRenameDialogHost />
       <SidebarWorktreeListDialogs
         dialogs={projectGroupDialogs}
         repos={repos}

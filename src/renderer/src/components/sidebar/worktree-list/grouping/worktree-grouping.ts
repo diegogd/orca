@@ -28,6 +28,7 @@ import type {
 } from './row-types'
 import { getManualOrderAnchorRepo, sortProjectEntries } from './section-order'
 import { compareTagSections, getTagSections } from './tag-groups'
+import { preferTagSpelling } from '../../../../../../shared/worktree/worktree-tags'
 
 /** Lane label for a lane a folder workspace opened before any worktree did. */
 function getLaneLabelForKey(
@@ -109,6 +110,10 @@ export function buildOrderedGroups(args: {
         grouped.set(key, { label, items: [], repo, repoIds: new Set() })
       }
       const group = grouped.get(key)!
+      if (groupBy === 'tag') {
+        // Why: spellings of one tag differ per workspace; the header must not follow sort order.
+        group.label = preferTagSpelling(group.label, label)
+      }
       group.items.push(w)
       addRepoIdToGroup(group, w.repoId)
     }
@@ -128,6 +133,12 @@ export function buildOrderedGroups(args: {
           })
         }
         const group = grouped.get(key)!
+        if (groupBy === 'tag') {
+          group.label = preferTagSpelling(
+            group.label,
+            getLaneLabelForKey(key, groupBy, workspaceStatuses, pair)
+          )
+        }
         group.folderWorkspaces ??= []
         group.folderWorkspaces.push(pair)
       }
