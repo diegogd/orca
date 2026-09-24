@@ -34,6 +34,7 @@ export function useComposerSubmitOrchestration(
     linkedWorkItem: target.sourceContextState.linkedWorkItem,
     name: target.sourceContextState.name,
     note: target.sourceContextState.note,
+    tags: target.sourceContextState.tags,
     onCreated: target.composerTargetStore.onCreated,
     persistDraft: target.composerTargetStore.persistDraft,
     resolvePendingSmartGitHubSubmit:
@@ -97,6 +98,7 @@ export function useComposerSubmitOrchestration(
     linkedGitLabMR: target.workspaceIdentityState.linkedGitLabMR,
     normalizedSparseDirectories: target.derivedComposerState.normalizedSparseDirectories,
     note: target.sourceContextState.note,
+    tags: target.sourceContextState.tags,
     onCreated: target.composerTargetStore.onCreated,
     parentWorktreeId: target.workspaceIdentityState.parentWorktreeId,
     persistDraft: target.composerTargetStore.persistDraft,
@@ -173,6 +175,7 @@ export function useComposerSubmitOrchestration(
     loadHookCheckForRepo: target.providerRuntimeSync.loadHookCheckForRepo,
     name: target.sourceContextState.name,
     note: target.sourceContextState.note,
+    tags: target.sourceContextState.tags,
     prepareQuickSubmitSource: quickSubmitSourcePreparation.prepareQuickSubmitSource,
     repoId: target.initialTargetState.repoId,
     resolvedSetupDecision: target.derivedComposerState.resolvedSetupDecision,

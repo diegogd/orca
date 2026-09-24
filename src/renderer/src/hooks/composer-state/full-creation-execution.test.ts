@@ -71,6 +71,7 @@ describe('useFullCreationExecution cancellation', () => {
       linkedGitLabMR: null,
       normalizedSparseDirectories: [],
       note: '',
+      tags: [],
       onCreated: vi.fn<NonNullable<FullCreationExecutionInput['onCreated']>>(),
       parentWorktreeId: null,
       persistDraft: false,

@@ -21,6 +21,7 @@ import { planAgentSessionLaunch } from '@/lib/agent-session-launch-plan'
 import { beginStructuredAgentSessionProvisionalLaunch } from '@/lib/structured-agent-session-provisional-tab'
 import { getNewWorkspaceProjectGroupHostId } from '@/lib/new-workspace-project-options'
 import { useAppStore } from '@/store'
+import { folderWorkspaceToWorktree } from '../../../../shared/folder-workspace-worktree'
 import {
   buildFolderWorkspaceLinkedStartupPlan,
   getFolderWorkspaceAgentLaunchPlatform,
@@ -50,6 +51,8 @@ type SubmitFolderWorkspaceCreateParams = {
   linkedWorkItem: LinkedWorkItemSummary | null
   linkedTaskSourceContext?: TaskSourceContext | null
   note: string
+  /** Tags applied right after the folder workspace is created. */
+  tags?: string[]
   quickAgent: TuiAgent | null
   autoRenameBranchFromWork: boolean | undefined
   agentCmdOverrides: Record<string, string> | undefined
@@ -71,6 +74,7 @@ export async function submitFolderWorkspaceCreate({
   linkedWorkItem,
   linkedTaskSourceContext,
   note,
+  tags = [],
   quickAgent,
   autoRenameBranchFromWork,
   agentCmdOverrides,
@@ -166,6 +170,17 @@ export async function submitFolderWorkspaceCreate({
   })
   if (!workspace) {
     return false
+  }
+  if (tags.length > 0) {
+    const folderWorktree = folderWorkspaceToWorktree(workspace)
+    // Why: same route the Tags menu uses, so tags land on the host that owns the folder.
+    void useAppStore.getState().updateWorktreeMeta(
+      folderWorktree.id,
+      { tags },
+      {
+        executionHostId: folderWorktree.hostId ?? 'local'
+      }
+    )
   }
   if (startupPlan && !startupPlan.launchToken) {
     // Why: delayed delivery must target the exact pane spawned from this queued
