@@ -80,6 +80,7 @@ export function normalizeLoadedUiState(
   const expandedCardPropsMigrated = parsed.ui?._expandedWorktreeCardPropertiesDefaulted === true
   const jiraIssueCardPropDefaulted = parsed.ui?._jiraIssueWorktreeCardPropertyDefaulted === true
   const hostCardPropDefaulted = parsed.ui?._hostWorktreeCardPropertyDefaulted === true
+  const tagsCardPropDefaulted = parsed.ui?._tagsWorktreeCardPropertyDefaulted === true
   const hadExperimentOn = readDeprecatedExperimentFlag(parsed)
   const deliberateUncheck =
     hadExperimentOn && Array.isArray(rawCardProps) && !rawCardProps.includes('inline-agents')
@@ -126,7 +127,12 @@ export function normalizeLoadedUiState(
       hostCardPropDefaulted || jiraCandidate.includes('host')
         ? jiraCandidate
         : [...jiraCandidate, 'host' as const]
-    const normalized = normalizeWorktreeCardProperties(hostCandidate)
+    // Why: 'tags' joined the defaults after profiles saved their list; backfill once so it shows up.
+    const tagsCandidate =
+      tagsCardPropDefaulted || hostCandidate.includes('tags')
+        ? hostCandidate
+        : [...hostCandidate, 'tags' as const]
+    const normalized = normalizeWorktreeCardProperties(tagsCandidate)
     const changed =
       normalized.length !== rawCardProps.length ||
       normalized.some((property, index) => property !== rawCardProps[index])
@@ -137,7 +143,8 @@ export function normalizeLoadedUiState(
     !inlineAgentsMigrated ||
     !expandedCardPropsMigrated ||
     !jiraIssueCardPropDefaulted ||
-    !hostCardPropDefaulted
+    !hostCardPropDefaulted ||
+    !tagsCardPropDefaulted
   ) {
     markNeedsSave()
   }
@@ -237,6 +244,7 @@ export function normalizeLoadedUiState(
     _inlineAgentsDefaultedForAllUsers: true,
     _expandedWorktreeCardPropertiesDefaulted: true,
     _jiraIssueWorktreeCardPropertyDefaulted: true,
-    _hostWorktreeCardPropertyDefaulted: true
+    _hostWorktreeCardPropertyDefaulted: true,
+    _tagsWorktreeCardPropertyDefaulted: true
   }
 }

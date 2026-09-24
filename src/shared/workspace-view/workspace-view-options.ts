@@ -66,6 +66,7 @@ export const WORKSPACE_CARD_PROPERTY_CHOICES = [
   { id: 'pr', label: 'PR/MR link' },
   { id: 'automation', label: 'Automation' },
   { id: 'comment', label: 'Notes' },
+  { id: 'tags', label: 'Tags' },
   { id: 'ports', label: 'Ports' },
   { id: 'inline-agents', label: 'Agent activity' },
   { id: 'host', label: 'Host' }
@@ -77,6 +78,7 @@ export const WORKSPACE_CARD_DISPLAY_CHOICES = [
   { id: 'linear-issue', label: 'Linear issues' },
   { id: 'jira-issue', label: 'Jira issues' },
   { id: 'comment', label: 'Notes' },
+  { id: 'tags', label: 'Tags' },
   { id: 'automation', label: 'Automation' },
   { id: 'cli', label: 'Orca CLI' },
   { id: 'ports', label: 'Ports' },
