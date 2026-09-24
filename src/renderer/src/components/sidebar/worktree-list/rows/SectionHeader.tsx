@@ -31,6 +31,8 @@ import {
   ProjectGroupCreateWorkspaceButton,
   ProjectGroupHeaderMenu
 } from './project-group-header-actions'
+import { TagHeaderMenu } from './tag-header-actions'
+import { UNTAGGED_GROUP_KEY } from '../grouping/tag-groups'
 import {
   RepoHeaderCreateWorkspaceButton,
   RepoHeaderProjectActionsMenu,
@@ -367,6 +369,10 @@ export function renderWorktreeSectionHeaderRow(args: {
               onRename={ctx.onRenameProjectGroup}
               onDelete={ctx.onDeleteProjectGroup}
             />
+          ) : null}
+
+          {ctx.groupBy === 'tag' && row.key !== UNTAGGED_GROUP_KEY ? (
+            <TagHeaderMenu tag={row.label} />
           ) : null}
 
           {folderBackedProjectGroup ? (
