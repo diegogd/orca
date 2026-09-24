@@ -110,9 +110,10 @@ export function normalizeLoadedUiState(
       jiraIssueCardPropDefaulted || expandedCandidate.includes('jira-issue')
         ? expandedCandidate
         : [...expandedCandidate, 'jira-issue' as const]
-    // Why: 'tags' joined the defaults after profiles saved their list; backfill once so it shows up.
+    // Why: 'tags' joined the Default-mode list after profiles saved theirs; backfill once, but
+    // never into Compact, whose preset stays quiet.
     const tagsCandidate =
-      tagsCardPropDefaulted || jiraCandidate.includes('tags')
+      tagsCardPropDefaulted || loadedCompactWorktreeCards || jiraCandidate.includes('tags')
         ? jiraCandidate
         : [...jiraCandidate, 'tags' as const]
     const normalized = normalizeWorktreeCardProperties(tagsCandidate)
