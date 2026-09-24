@@ -12,6 +12,7 @@ import {
 } from '@/lib/text-control-paste'
 import { translate } from '@/i18n/i18n'
 import { ComposerParentWorktreePicker } from './ComposerParentWorktreePicker'
+import { ComposerTagsField } from './ComposerTagsField'
 import type { NewWorkspaceComposerCardProps } from './new-workspace-composer-card-props'
 
 function SetupCommandPreview({
@@ -45,6 +46,8 @@ type NewWorkspaceComposerAdvancedSectionProps = Pick<
   | 'activeFolderWorkspaceId'
   | 'note'
   | 'onNoteChange'
+  | 'tags'
+  | 'onTagsChange'
   | 'setupControlsEnabled'
   | 'setupConfig'
   | 'requiresExplicitSetupChoice'
@@ -87,6 +90,8 @@ export function NewWorkspaceComposerAdvancedSection({
   activeFolderWorkspaceId = null,
   note,
   onNoteChange,
+  tags,
+  onTagsChange,
   setupControlsEnabled = true,
   setupConfig,
   setupConfigLabel,
@@ -230,6 +235,8 @@ export function NewWorkspaceComposerAdvancedSection({
               className="w-full min-w-0 resize-none overflow-y-auto scrollbar-sleek rounded-md border border-input bg-transparent px-3 py-1.5 text-sm shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [field-sizing:content] max-h-40"
             />
           </div>
+
+          <ComposerTagsField tags={tags} onTagsChange={onTagsChange} disabled={!advancedOpen} />
 
           {setupControlsEnabled && setupConfig ? (
             <div className="space-y-2">

@@ -11,6 +11,7 @@ export type FullCreationExecutionInput = Pick<
   | 'linkedGitLabMR'
   | 'normalizedSparseDirectories'
   | 'note'
+  | 'tags'
   | 'onCreated'
   | 'parentWorktreeId'
   | 'persistDraft'
@@ -41,6 +42,7 @@ import { planAgentSessionLaunch } from '@/lib/agent-session-launch-plan'
 import { beginFullCreationStructuredLaunch } from './full-creation-structured-launch'
 import { finalizeFullCreation } from './full-creation-finalization'
 import { buildFullCreationIssueCommand } from './full-creation-issue-command'
+import { getCreationWorktreeMeta } from '@/lib/worktree-creation-meta'
 import { buildFullCreationStartup } from './full-creation-startup'
 
 export function useFullCreationExecution(input: FullCreationExecutionInput) {
@@ -54,6 +56,7 @@ export function useFullCreationExecution(input: FullCreationExecutionInput) {
     linkedGitLabMR,
     normalizedSparseDirectories,
     note,
+    tags,
     onCreated,
     parentWorktreeId,
     persistDraft,
@@ -247,8 +250,7 @@ export function useFullCreationExecution(input: FullCreationExecutionInput) {
       const structuredLaunchAccepted = structuredLaunch
       const activation = activationHolder.value
 
-      const trimmedNote = note.trim()
-      await applyWorktreeMeta(worktree.id, trimmedNote ? { comment: trimmedNote } : {})
+      await applyWorktreeMeta(worktree.id, getCreationWorktreeMeta(note, tags))
 
       if (!structuredLaunchAccepted && startupPlan) {
         const optionScopeKey =
@@ -287,6 +289,7 @@ export function useFullCreationExecution(input: FullCreationExecutionInput) {
       linkedGitLabMR,
       normalizedSparseDirectories,
       note,
+      tags,
       onCreated,
       parentWorktreeId,
       persistDraft,

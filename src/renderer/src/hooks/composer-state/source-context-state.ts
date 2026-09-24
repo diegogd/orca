@@ -81,6 +81,8 @@ export function useComposerSourceContextState(input: ComposerSourceContextStateI
 
   const [note, setNote] = useState<string>(persistDraft ? (newWorkspaceDraft?.note ?? '') : '')
 
+  const [tags, setTags] = useState<string[]>(persistDraft ? (newWorkspaceDraft?.tags ?? []) : [])
+
   const [attachmentPaths, setAttachmentPaths] = useState<string[]>(
     persistDraft ? (newWorkspaceDraft?.attachments ?? []) : []
   )
@@ -228,6 +230,8 @@ export function useComposerSourceContextState(input: ComposerSourceContextStateI
     setAgentPrompt,
     note,
     setNote,
+    tags,
+    setTags,
     attachmentPaths,
     setAttachmentPaths,
     normalizedInitialLinkedWorkItem,
