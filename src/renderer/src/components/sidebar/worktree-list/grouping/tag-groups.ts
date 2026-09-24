@@ -1,6 +1,7 @@
 import { Tag, Tags } from 'lucide-react'
 import { translate } from '@/i18n/i18n'
 import {
+  compareWorktreeTags,
   normalizeWorktreeTags,
   worktreeTagKey
 } from '../../../../../../shared/worktree/worktree-tags'
@@ -49,5 +50,5 @@ export function compareTagSections(
   if (left.key === UNTAGGED_GROUP_KEY || right.key === UNTAGGED_GROUP_KEY) {
     return Number(left.key === UNTAGGED_GROUP_KEY) - Number(right.key === UNTAGGED_GROUP_KEY)
   }
-  return left.label.localeCompare(right.label, undefined, { sensitivity: 'base' })
+  return compareWorktreeTags(left.label, right.label)
 }
