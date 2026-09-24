@@ -37,6 +37,7 @@ import {
   ProjectGroupCreateWorkspaceButton,
   ProjectGroupHeaderMenu
 } from './project-group-header-actions'
+import { TagHeaderMenu } from './tag-header-actions'
 import {
   RepoHeaderCreateWorkspaceButton,
   RepoHeaderProjectActionsMenu,
@@ -379,6 +380,8 @@ export function renderWorktreeSectionHeaderRow(args: {
                 onDelete={ctx.onDeleteProjectGroup}
               />
             ) : null}
+
+            {row.icon.kind === 'tag' && row.label ? <TagHeaderMenu tag={row.label} /> : null}
 
             {folderBackedProjectGroup ? (
               <ProjectGroupCreateWorkspaceButton
