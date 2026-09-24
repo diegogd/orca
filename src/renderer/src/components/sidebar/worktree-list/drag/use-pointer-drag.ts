@@ -185,10 +185,11 @@ export function useWorktreePointerDrag(args: {
       ) {
         return
       }
-      const draggedIds =
+      const draggedRows =
         selectedWorktreeIds.has(getWorktreeHostIdentity(worktree)) && selectedWorktrees.length > 1
-          ? selectedWorktrees.map((worktree) => worktree.id)
-          : [worktreeId]
+          ? selectedWorktrees
+          : [worktree]
+      const draggedIds = draggedRows.map((row) => row.id)
       const reorderDraggedIds = session.getReorderDraggedIds(draggedIds)
       const reorderUnitDraggedIds = session.getReorderUnitDraggedIds(
         sourceGroupKey,
@@ -203,6 +204,7 @@ export function useWorktreePointerDrag(args: {
         currentY: event.clientY,
         worktreeId,
         draggedIds,
+        draggedIdentities: draggedRows.map(getWorktreeHostIdentity),
         reorderDraggedIds,
         reorderUnitDraggedIds,
         sourceGroupKey,

@@ -62,7 +62,7 @@ describe('useFullCreationExecution cancellation', () => {
     const state = {
       applyWorktreeMeta: vi
         .fn<FullCreationExecutionInput['applyWorktreeMeta']>()
-        .mockResolvedValue(),
+        .mockResolvedValue({ ok: true }),
       clearNewWorkspaceDraft: vi.fn<FullCreationExecutionInput['clearNewWorkspaceDraft']>(),
       createWorktree,
       effectivePresetId: null,

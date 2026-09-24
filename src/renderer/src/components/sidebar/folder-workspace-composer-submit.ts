@@ -22,6 +22,7 @@ import { planAgentSessionLaunch } from '@/lib/agent-session-launch-plan'
 import { beginStructuredAgentSessionProvisionalLaunch } from '@/lib/structured-agent-session-provisional-tab'
 import { getNewWorkspaceProjectGroupHostId } from '@/lib/new-workspace-project-options'
 import { useAppStore } from '@/store'
+import { persistCreationMetadata } from '@/lib/worktree-creation-meta'
 import { folderWorkspaceToWorktree } from '../../../../shared/folder-workspace-worktree'
 import {
   buildFolderWorkspaceLinkedStartupPlan,
@@ -174,14 +175,17 @@ export async function submitFolderWorkspaceCreate({
   }
   if (tags.length > 0) {
     const folderWorktree = folderWorkspaceToWorktree(workspace)
-    // Why: same route the Tags menu uses, so tags land on the host that owns the folder.
-    void useAppStore.getState().updateWorktreeMeta(
-      folderWorktree.id,
-      { tags },
-      {
-        executionHostId: folderWorktree.hostId ?? 'local'
-      }
-    )
+    // Why: same route the Tags menu uses, so tags land on the host that owns the folder; not awaited so the handoff stays fast.
+    void persistCreationMetadata({
+      worktreeId: folderWorktree.id,
+      workspaceName: workspace.name,
+      note: undefined,
+      tags,
+      write: (worktreeId, updates) =>
+        useAppStore.getState().updateWorktreeMeta(worktreeId, updates, {
+          executionHostId: folderWorktree.hostId ?? 'local'
+        })
+    })
   }
   if (!structuredLaunch) {
     await preflightAgentTrust({

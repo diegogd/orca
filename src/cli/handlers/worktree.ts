@@ -38,7 +38,7 @@ import {
   resolveCreateParentSelector
 } from './worktree-create-parent-selector'
 import { getOptionalLinearIssueLinkFlag } from './worktree-linear-issue-link'
-import { getWorktreeSetTags } from '../worktree-tag-flags'
+import { getWorktreeSetTagParams } from '../worktree-tag-flags'
 
 function assertParentWorktreeFlagsCompatible(flags: Map<string, string | boolean>): void {
   if (flags.has('parent-worktree') && flags.get('no-parent') === true) {
@@ -260,7 +260,7 @@ export const WORKTREE_HANDLERS: Record<string, CommandHandler> = {
       allowNull: true
     })
     const worktree = await getRequiredWorktreeSelector(flags, 'worktree', cwd, client)
-    const tags = await getWorktreeSetTags(flags, client, worktree)
+    const tagParams = await getWorktreeSetTagParams(flags, client)
     const result = await client.call<{ worktree: RuntimeWorktreeRecord }>('worktree.set', {
       worktree,
       displayName: getOptionalStringFlag(flags, 'display-name'),
@@ -268,7 +268,7 @@ export const WORKTREE_HANDLERS: Record<string, CommandHandler> = {
       ...linearIssueLink,
       comment: getOptionalStringFlag(flags, 'comment'),
       workspaceStatus: getOptionalStringFlag(flags, 'workspace-status'),
-      ...(tags !== undefined ? { tags } : {}),
+      ...tagParams,
       parentWorktree: await getOptionalWorktreeSelector(flags, 'parent-worktree', cwd, client),
       noParent: flags.get('no-parent') === true
     })

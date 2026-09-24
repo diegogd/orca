@@ -91,7 +91,7 @@ export function commitWorktreePointerDrop(args: PointerDropCommitArgs): void {
       : null
     // Why only across sections: inside its own section a drag keeps reorder and lineage nesting.
     if (tagSection && tagSection !== drag.sourceGroupKey) {
-      ctx.onTagWorktrees(drag.draggedIds, tagSection.slice(TAG_GROUP_PREFIX.length))
+      ctx.onTagWorktrees(drag.draggedIdentities, tagSection.slice(TAG_GROUP_PREFIX.length))
       ctx.clearWorktreeDrag()
       return
     }

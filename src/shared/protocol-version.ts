@@ -42,7 +42,7 @@ export const WORKTREE_LINKED_WORK_ITEM_CONTEXT_RUNTIME_CAPABILITY =
   'worktree.linked-work-item-context.v1' as const
 export const WORKTREE_GITHUB_PR_SUPPRESSION_RUNTIME_CAPABILITY =
   'worktree.github-pr-suppression.v1' as const
-// worktree.set and folderWorkspace.update accept `tags`; older hosts strip the key silently.
+// worktree.set accepts `tags`/`addTags`/`removeTags`, folderWorkspace.update `tags`; older hosts strip them silently.
 export const WORKTREE_TAGS_RUNTIME_CAPABILITY = 'worktree.tags.v1' as const
 export const REMOTE_RUNTIME_SHARED_CONTROL_CAPABILITY = 'remote-runtime.shared-control.v1' as const
 export const ORCHESTRATION_FEDERATION_RUNTIME_CAPABILITY = 'orchestration.federation.v1' as const
