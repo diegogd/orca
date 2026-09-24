@@ -20,6 +20,7 @@ import { getFolderWorkspaceCardPrDisplay } from '../../folder-workspace-card-pr-
 import { FolderPathStatusIndicator } from './FolderPathStatusIndicator'
 import type { FolderWorkspaceItemRow } from '../listing/renderable-rows'
 import { getWorktreeOptionId } from './option-dom'
+import { getFolderWorkspaceRowNavigationKey } from '../../../../../../shared/sidebar-list/row-builders'
 
 export type FolderWorkspaceRowContext = {
   groupBy: WorktreeGroupBy
@@ -94,7 +95,7 @@ export function renderFolderWorkspaceVirtualRow(args: {
   return (
     <div
       key={vItem.key}
-      id={getWorktreeOptionId(folderWorktreeIdentity)}
+      id={getWorktreeOptionId(getFolderWorkspaceRowNavigationKey(row))}
       role="option"
       aria-selected={ctx.selectedWorktreeIds.has(folderWorktreeIdentity)}
       aria-current={isActiveWorktree ? 'page' : undefined}

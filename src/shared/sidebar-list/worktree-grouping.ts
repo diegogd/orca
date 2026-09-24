@@ -5,7 +5,7 @@ import { getWorktreeHostIdentity } from '../worktree/host-qualified-identity'
 import { getWorkspaceStatus, getWorkspaceStatusGroupKey } from '../workspace-statuses'
 import {
   compareFolderWorkspacesForDisplay,
-  getFolderWorkspaceLaneKey,
+  getFolderWorkspaceLaneKeys,
   type RenderableFolderWorkspace
 } from './folder-workspace-lanes'
 import { PR_GROUP_ORDER, getPRLaneKey } from './group-keys'
@@ -19,6 +19,7 @@ import type {
   SidebarPRGroupReader,
   WorktreeGroupBy
 } from './row-types'
+import { compareTagSections, getTagSections, type TaggedSection } from './tag-groups'
 
 /** Buckets worktrees into their sections and returns them in render order. */
 export function buildOrderedGroups(args: {
@@ -78,36 +79,53 @@ export function buildOrderedGroups(args: {
     })
   }
 
-  // Why no lane labels: status and PR headers are named by the section emitter and the client.
+  // Why no status or PR lane labels: those headers are named by the section emitter and the client.
+  const getSections = (w: Worktree): TaggedSection[] =>
+    // Why: tag is the one mode where a workspace renders in several sections, once per tag.
+    groupBy === 'tag'
+      ? getTagSections(w)
+      : [
+          {
+            key:
+              groupBy === 'workspace-status'
+                ? getWorkspaceStatusGroupKey(getWorkspaceStatus(w, workspaceStatuses))
+                : getPRLaneKey(prGroupOf(w)),
+            label: ''
+          }
+        ]
+
   const grouped = new Map<string, WorktreeGroupEntry>()
   for (const w of naturalWorktrees) {
-    const key =
-      groupBy === 'workspace-status'
-        ? getWorkspaceStatusGroupKey(getWorkspaceStatus(w, workspaceStatuses))
-        : getPRLaneKey(prGroupOf(w))
-    if (!grouped.has(key)) {
-      grouped.set(key, { label: '', items: [], repo: undefined, repoIds: new Set() })
+    for (const { key, label } of getSections(w)) {
+      if (!grouped.has(key)) {
+        grouped.set(key, { label, items: [], repo: undefined, repoIds: new Set() })
+      }
+      const group = grouped.get(key)!
+      group.items.push(w)
+      group.repoIds.add(w.repoId)
     }
-    const group = grouped.get(key)!
-    group.items.push(w)
-    group.repoIds.add(w.repoId)
   }
   // Why: folder workspaces are not worktrees, so they never appear in the loop
   // above. Bucketing them here — and creating the lane when no worktree opened
   // one — is what lets a folder workspace be the sole occupant of a lane (#15362).
   for (const pair of folderWorkspaces) {
-    const key = getFolderWorkspaceLaneKey(pair, groupBy, workspaceStatuses)
-    if (!grouped.has(key)) {
-      grouped.set(key, {
-        label: '',
-        items: [],
-        repo: undefined,
-        repoIds: new Set()
-      })
+    for (const key of getFolderWorkspaceLaneKeys(pair, groupBy, workspaceStatuses)) {
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          label:
+            groupBy === 'tag'
+              ? (getTagSections(pair.folderWorkspace).find((section) => section.key === key)
+                  ?.label ?? '')
+              : '',
+          items: [],
+          repo: undefined,
+          repoIds: new Set()
+        })
+      }
+      const group = grouped.get(key)!
+      group.folderWorkspaces ??= []
+      group.folderWorkspaces.push(pair)
     }
-    const group = grouped.get(key)!
-    group.folderWorkspaces ??= []
-    group.folderWorkspaces.push(pair)
   }
   for (const group of grouped.values()) {
     group.folderWorkspaces?.sort((left, right) =>
@@ -122,6 +140,13 @@ export function buildOrderedGroups(args: {
       if (group) {
         orderedGroups.push([key, group])
       }
+    }
+  } else if (groupBy === 'tag') {
+    const entries = Array.from(grouped.entries()).sort(([leftKey, left], [rightKey, right]) =>
+      compareTagSections({ key: leftKey, label: left.label }, { key: rightKey, label: right.label })
+    )
+    for (const entry of entries) {
+      orderedGroups.push(entry)
     }
   } else if (groupBy === 'workspace-status') {
     // Why: status grouping is opt-in while the board drawer remains the wider
