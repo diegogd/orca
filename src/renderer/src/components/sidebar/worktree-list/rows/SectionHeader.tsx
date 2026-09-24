@@ -38,6 +38,7 @@ import {
   ProjectGroupHeaderMenu
 } from './project-group-header-actions'
 import { TagHeaderMenu } from './tag-header-actions'
+import { getTagDropTargetProps } from '../drag/tag-target'
 import {
   RepoHeaderCreateWorkspaceButton,
   RepoHeaderProjectActionsMenu,
@@ -242,6 +243,7 @@ export function renderWorktreeSectionHeaderRow(args: {
           data-project-group-header-drag-handle={isDraggableProjectGroupHeader ? '' : undefined}
           data-workspace-status-drop-target={headerWorkspaceStatus ? '' : undefined}
           data-workspace-status={headerWorkspaceStatus ?? undefined}
+          {...getTagDropTargetProps(ctx.groupBy === 'tag' ? row.key : undefined)}
           data-workspace-pin-drop-target={isPinnedHeader ? '' : undefined}
           className={cn(
             // Why: no row-level grab — only the title surface below shows the hand;
