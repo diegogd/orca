@@ -85,6 +85,8 @@ export function useComposerSourceContextState(input: ComposerSourceContextStateI
   const [note, setNote] = useState<string>(persistDraft ? (newWorkspaceDraft?.note ?? '') : '')
 
   const [tags, setTags] = useState<string[]>(persistDraft ? (newWorkspaceDraft?.tags ?? []) : [])
+  // Why composer state: ⌘Enter submits before the field can commit a typed-but-unentered tag.
+  const [tagDraft, setTagDraft] = useState('')
 
   const [attachmentPaths, setAttachmentPaths] = useState<string[]>(
     persistDraft ? (newWorkspaceDraft?.attachments ?? []) : []
@@ -235,6 +237,8 @@ export function useComposerSourceContextState(input: ComposerSourceContextStateI
     setNote,
     tags,
     setTags,
+    tagDraft,
+    setTagDraft,
     attachmentPaths,
     setAttachmentPaths,
     normalizedInitialLinkedWorkItem,

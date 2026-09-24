@@ -94,6 +94,8 @@ export async function renderCard(
         onNoteChange={() => {}}
         tags={[]}
         onTagsChange={() => {}}
+        tagDraft=""
+        onTagDraftChange={() => {}}
         setupConfig={null}
         requiresExplicitSetupChoice={false}
         setupDecision={null}
