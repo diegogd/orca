@@ -15,6 +15,7 @@ type FolderSubmitOrchestrationInput = Pick<
   | 'linkedWorkItem'
   | 'name'
   | 'note'
+  | 'tags'
   | 'onCreated'
   | 'persistDraft'
   | 'resolvePendingSmartGitHubSubmit'
@@ -57,6 +58,7 @@ export function useFolderSubmitOrchestration(input: FolderSubmitOrchestrationInp
     linkedWorkItem,
     name,
     note,
+    tags,
     onCreated,
     persistDraft,
     resolvePendingSmartGitHubSubmit,
@@ -107,6 +109,7 @@ export function useFolderSubmitOrchestration(input: FolderSubmitOrchestrationInp
           linkedWorkItem: submitLinkedWorkItem,
           linkedTaskSourceContext: taskSourceContext,
           note,
+          tags,
           quickAgent: agent,
           autoRenameBranchFromWork: settings?.autoRenameBranchFromWork,
           agentCmdOverrides: settings?.agentCmdOverrides,
@@ -167,6 +170,7 @@ export function useFolderSubmitOrchestration(input: FolderSubmitOrchestrationInp
       linkedWorkItem,
       name,
       note,
+      tags,
       onCreated,
       persistDraft,
       resolvePendingSmartGitHubSubmit,

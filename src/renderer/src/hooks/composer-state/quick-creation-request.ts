@@ -45,6 +45,7 @@ export type QuickCreationRequestInput = {
   hookPreparation?: WorktreeCreationRequest['hookPreparation']
   pendingFirstAgentMessageRename: boolean
   note: string
+  tags: string[]
   startupPlan: AgentStartupPlan | null
   quickPrompt: string
   launchDraftPrompt: string | null | undefined
@@ -113,6 +114,7 @@ export function buildQuickCreationRequest(
     ...(input.issueCommand ? { issueCommand: input.issueCommand } : {}),
     pendingFirstAgentMessageRename: input.pendingFirstAgentMessageRename,
     note: input.note,
+    ...(input.tags.length > 0 ? { tags: input.tags } : {}),
     startupPlan: input.startupPlan,
     quickPrompt: input.quickPrompt,
     ...(input.launchDraftPrompt ? { launchDraftPrompt: input.launchDraftPrompt } : {}),

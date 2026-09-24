@@ -115,7 +115,8 @@ export function useQuickCreationExecution(input: QuickCreationExecutionInput) {
         submitBaseBranch,
         createDisplayName,
         pendingFirstAgentMessageRename,
-        trimmedNote
+        trimmedNote,
+        tags
       } = prepared
 
       const promptLinkedWorkItem = agent === null ? null : submitLinkedWorkItem
@@ -233,6 +234,7 @@ export function useQuickCreationExecution(input: QuickCreationExecutionInput) {
           : hookPreparation,
         pendingFirstAgentMessageRename,
         note: trimmedNote,
+        tags,
         startupPlan,
         quickPrompt,
         launchDraftPrompt: quickDraftPrompt,
