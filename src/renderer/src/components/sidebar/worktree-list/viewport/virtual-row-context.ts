@@ -85,6 +85,7 @@ export function buildWorktreeVirtualRowContext(args: BuildArgs): WorktreeVirtual
       getRepoSshGate: args.getRepoSshGate,
       highlightedRevealRowKey: reveal.highlightedRevealRowKey,
       dragOverStatus: runtime.dragOverStatus,
+      dragOverTagSection: runtime.dragOverTagSection,
       pinDragOver: runtime.pinDragOver,
       headerDrag,
       projectHeaderHostContexts: args.projectHeaderHostContexts,
