@@ -11,6 +11,7 @@ import {
 } from './WorktreeCardMeta'
 import { WorktreeCardPortsDetails, WorktreeCardPortsTrigger } from './WorktreeCardPorts'
 import type { WorktreeCardController } from './use-worktree-card-controller'
+import { normalizeWorktreeTags } from '../../../../shared/worktree/worktree-tags'
 
 export function buildWorktreeCardPresentation(card: WorktreeCardController) {
   const {
@@ -257,8 +258,13 @@ export function buildWorktreeCardPresentation(card: WorktreeCardController) {
   const titleRowIndicators = showTitleRowIndicators ? (
     <div className="ml-auto flex shrink-0 items-center gap-1 pr-1.5">{detailsAndPorts}</div>
   ) : null
+  const visibleTags = cardProps.includes('tags') ? normalizeWorktreeTags(worktree.tags) : []
   const hasSecondaryCardContent =
-    hasMetaRow || !!remoteBranchConflict || showInlineAgentList || showLineageChildChip
+    hasMetaRow ||
+    !!remoteBranchConflict ||
+    visibleTags.length > 0 ||
+    showInlineAgentList ||
+    showLineageChildChip
   const titleOnlyCard = !hasSecondaryCardContent
 
   return {
@@ -286,6 +292,7 @@ export function buildWorktreeCardPresentation(card: WorktreeCardController) {
     cardStyle,
     detailsAndPorts,
     titleRowIndicators,
+    visibleTags,
     titleOnlyCard
   }
 }
