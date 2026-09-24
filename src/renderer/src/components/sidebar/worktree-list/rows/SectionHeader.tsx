@@ -54,6 +54,7 @@ export type SectionHeaderRowContext = {
   sshConnectionStates: AppState['sshConnectionStates']
   highlightedRevealRowKey: string | null
   dragOverStatus: WorkspaceStatus | null
+  dragOverTagSection: string | null
   pinDragOver: boolean
   headerDrag: WorktreeSidebarHeaderDrag
   getCachedFolderWorkspacePathStatus: (request: {
@@ -247,6 +248,8 @@ export function renderWorktreeSectionHeaderRow(args: {
             'rounded-md bg-worktree-sidebar-accent ring-1 ring-worktree-sidebar-ring/40',
           isPinnedHeader &&
             ctx.pinDragOver &&
+            'rounded-md bg-worktree-sidebar-accent ring-1 ring-worktree-sidebar-ring/40',
+          ctx.dragOverTagSection === row.key &&
             'rounded-md bg-worktree-sidebar-accent ring-1 ring-worktree-sidebar-ring/40',
           row.repo && 'overflow-hidden'
         )}
