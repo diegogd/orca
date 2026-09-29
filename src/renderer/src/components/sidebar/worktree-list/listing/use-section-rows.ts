@@ -5,6 +5,7 @@ import { useAppStore } from '@/store'
 import type { AppState } from '@/store/types'
 import type { FolderWorkspace } from '../../../../../../shared/folder-workspace-types'
 import type { ProjectGroup } from '../../../../../../shared/project-group-types'
+import type { TagSectionOrder } from '../grouping/tag-section-order'
 import type { ProjectOrderBy } from '../../../../../../shared/ui-chrome-types'
 import type { Repo } from '../../../../../../shared/repo-types'
 import type { WorkspaceStatusDefinition, Worktree } from '../../../../../../shared/worktree/types'
@@ -24,6 +25,7 @@ import { selectPendingWorktreeCreationKeys } from './pending-worktree-creation-k
 type SectionRowsArgs = {
   groupBy: WorktreeGroupBy
   projectOrderBy: ProjectOrderBy
+  tagOrder: TagSectionOrder
   pinnedDisplayPolicy: PinnedWorktreeDisplayPolicy
   defaultHostId: ExecutionHostId
   worktrees: Worktree[]
@@ -157,7 +159,8 @@ export function useSidebarSectionRows(args: SectionRowsArgs) {
         args.visibleFolderWorkspacesForRows,
         hostLabelById,
         defaultHostId,
-        args.pinnedDisplayPolicy
+        args.pinnedDisplayPolicy,
+        args.tagOrder
       ),
     [
       args.groupBy,
@@ -180,7 +183,8 @@ export function useSidebarSectionRows(args: SectionRowsArgs) {
       args.newExternalWorktreesInboxByRepo,
       pendingCreations,
       hostLabelById,
-      args.pinnedDisplayPolicy
+      args.pinnedDisplayPolicy,
+      args.tagOrder
     ]
   )
   const orderedHostOptions = useMemo(

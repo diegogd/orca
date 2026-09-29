@@ -5607,7 +5607,13 @@
           "cli": "Orca CLI",
           "workspaceOptions": "Workspace options",
           "tag": "Tag",
-          "tags": "Tags"
+          "tags": "Tags",
+          "tagOrderName": "Name",
+          "tagOrderNameHint": "Alphabetical, ignoring case",
+          "tagOrderManualHint": "Drag tag headers to arrange them",
+          "tagOrderActivity": "Activity",
+          "tagOrderActivityHint": "Most recent agent activity in the tag",
+          "tagOrder": "Tag order"
         },
         "SshTargetRow": {
           "4677394048": "Connecting…",

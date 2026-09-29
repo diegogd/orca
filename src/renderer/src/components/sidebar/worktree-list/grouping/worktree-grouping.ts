@@ -1,5 +1,5 @@
 import type { Repo } from '../../../../../../shared/repo-types'
-import type { ProjectOrderBy } from '../../../../../../shared/ui-chrome-types'
+import type { ProjectOrderBy, TagOrderBy } from '../../../../../../shared/ui-chrome-types'
 import type { WorkspaceStatusDefinition, Worktree } from '../../../../../../shared/worktree/types'
 import type { AppState } from '../../../../store/types'
 import {
@@ -27,7 +27,7 @@ import type {
   WorktreeGroupBy
 } from './row-types'
 import { getManualOrderAnchorRepo, sortProjectEntries } from './section-order'
-import { compareTagSections, getTagSections } from './tag-groups'
+import { getTagSections, sortTagEntries } from './tag-groups'
 import { preferTagSpelling } from '../../../../../../shared/worktree/worktree-tags'
 
 /** Lane label for a lane a folder workspace opened before any worktree did. */
@@ -65,6 +65,8 @@ export function buildOrderedGroups(args: {
   pendingByRepo: ReadonlyMap<string, PendingCreationRef[]>
   repoOrder: Map<string, number> | undefined
   projectOrderBy: ProjectOrderBy
+  tagOrderBy?: TagOrderBy
+  manualTagOrder?: readonly string[]
   folderWorkspaces?: readonly RenderableFolderWorkspace[]
 }): OrderedGroupEntry[] {
   const {
@@ -81,6 +83,8 @@ export function buildOrderedGroups(args: {
     pendingByRepo,
     repoOrder,
     projectOrderBy,
+    tagOrderBy = 'name',
+    manualTagOrder = [],
     folderWorkspaces = []
   } = args
 
@@ -234,10 +238,7 @@ export function buildOrderedGroups(args: {
       }
     }
   } else if (groupBy === 'tag') {
-    const entries = Array.from(grouped.entries()).sort(([leftKey, left], [rightKey, right]) =>
-      compareTagSections({ key: leftKey, label: left.label }, { key: rightKey, label: right.label })
-    )
-    for (const entry of entries) {
+    for (const entry of sortTagEntries(Array.from(grouped.entries()), tagOrderBy, manualTagOrder)) {
       orderedGroups.push(entry)
     }
   } else if (groupBy === 'workspace-status') {

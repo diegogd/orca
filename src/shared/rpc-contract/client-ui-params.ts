@@ -138,6 +138,7 @@ export const UiUpdateFields = z
     showWorkspaceLineage: z.boolean().optional(),
     sortBy: z.enum(['name', 'smart', 'recent', 'repo', 'manual']).optional(),
     projectOrderBy: z.enum(['manual', 'recent']).optional(),
+    tagOrderBy: z.enum(['name', 'manual', 'activity']).optional(),
     showActiveOnly: z.boolean().optional(),
     hideSleepingWorkspaces: z.boolean().optional(),
     showSleepingWorkspaces: z.boolean().optional(),
@@ -161,6 +162,7 @@ export const UiUpdateFields = z
     manualRepoOrder: z
       .array(z.object({ hostId: z.string(), repoId: z.string() }).strict())
       .optional(),
+    manualTagOrder: StringArray.optional(),
     ...ClientUiWorkspaceFilterFields,
     // Why: rides App.tsx's debounced writer, so omitting it rejected that entire
     // payload (sidebar widths, filters, agent acks) for every paired client.

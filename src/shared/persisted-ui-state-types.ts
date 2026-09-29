@@ -15,6 +15,7 @@ import type {
   RightSidebarExplorerView,
   RightSidebarTab,
   StatusBarItem,
+  TagOrderBy,
   TaskResumeState,
   ThreadReadFilter,
   TopLevelView,
@@ -43,6 +44,10 @@ export type PersistedUIState = {
   sortBy: 'name' | 'smart' | 'recent' | 'repo' | 'manual'
   /** Project header ordering in `groupBy: 'repo'`, independent of `sortBy`: 'manual' uses persisted order + header drag, 'recent' by latest visible activity. */
   projectOrderBy: ProjectOrderBy
+  /** Tag header ordering in `groupBy: 'tag'`: 'name' alphabetical, 'manual' persisted order + header drag, 'activity' by latest agent activity. */
+  tagOrderBy?: TagOrderBy
+  /** User-defined tag section order for `tagOrderBy: 'manual'`; tags missing here append after the listed ones. */
+  manualTagOrder?: string[]
   /** Deprecated; the Active only filter is retired and ignored on hydration. */
   showActiveOnly: boolean
   /** Hide sleeping/inactive workspaces from workspace navigation. Off by default. */

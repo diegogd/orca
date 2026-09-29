@@ -6,6 +6,7 @@ import type {
   ManualRepoOrderEntry,
   ProjectOrderBy,
   StatusBarItem,
+  TagOrderBy,
   ThreadReadFilter,
   WorktreeCardMode,
   WorktreeCardProperty,
@@ -34,6 +35,9 @@ export type UISlicePreferences = {
   setSortBy: (s: UISlicePreferences['sortBy']) => void
   projectOrderBy: ProjectOrderBy
   setProjectOrderBy: (p: ProjectOrderBy) => void
+  tagOrderBy: TagOrderBy
+  /** Persists immediately, off the debounced writer; see the action for why. */
+  setTagOrderBy: (t: TagOrderBy) => void
   showActiveOnly: boolean
   setShowActiveOnly: (v: boolean) => void
   showSleepingWorkspaces: boolean
@@ -48,6 +52,9 @@ export type UISlicePreferences = {
   automationHostFilter: AutomationHostFilter
   setAutomationHostFilter: (filter: AutomationHostFilter) => void
   manualRepoOrder: ManualRepoOrderEntry[]
+  manualTagOrder: string[]
+  /** Persists immediately; the debounced writer never owns a drag-committed order. */
+  setManualTagOrder: (order: readonly string[]) => void
   hideDefaultBranchWorkspace: boolean
   setHideDefaultBranchWorkspace: (v: boolean) => void
   hideAutomationGeneratedWorkspaces: boolean

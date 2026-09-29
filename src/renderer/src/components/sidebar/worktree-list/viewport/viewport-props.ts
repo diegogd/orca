@@ -4,6 +4,7 @@ import type { VirtualizedScrollAnchor } from '@/hooks/useVirtualizedScrollAnchor
 import type { PendingSidebarRowReveal, PendingSidebarWorktreeReveal } from '@/store/slices/ui'
 import type { FolderWorkspace } from '../../../../../../shared/folder-workspace-types'
 import type { ProjectGroup } from '../../../../../../shared/project-group-types'
+import type { TagSectionOrder } from '../grouping/tag-section-order'
 import type { ProjectOrderBy } from '../../../../../../shared/ui-chrome-types'
 import type { Repo } from '../../../../../../shared/repo-types'
 import type {
@@ -33,6 +34,7 @@ export type VirtualizedWorktreeViewportProps = {
   groupBy: WorktreeGroupBy
   pinnedDisplayPolicy: PinnedWorktreeDisplayPolicy
   projectOrderBy: ProjectOrderBy
+  tagOrder: TagSectionOrder
   toggleGroup: (key: string) => void
   collapsedGroups: Set<string>
   handleCreateForRepo: (projectId: string) => void
