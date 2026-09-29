@@ -82,6 +82,8 @@ const WorktreeList = React.memo(function WorktreeList({
   const workspaceStatuses = useAppStore((s) => s.workspaceStatuses)
   const sortBy = useAppStore((s) => s.sortBy)
   const projectOrderBy = useAppStore((s) => s.projectOrderBy)
+  const tagOrderBy = useAppStore((s) => s.tagOrderBy)
+  const manualTagOrder = useAppStore((s) => s.manualTagOrder)
   const openModal = useAppStore((s) => s.openModal)
   const openSettingsPage = useAppStore((s) => s.openSettingsPage)
   const openSettingsTarget = useAppStore((s) => s.openSettingsTarget)
@@ -118,11 +120,16 @@ const WorktreeList = React.memo(function WorktreeList({
     () => buildWorktreeManualOrderCatalog({ worktrees: allWorktrees, folderWorkspaces }),
     [allWorktrees, folderWorkspaces]
   )
+  const tagOrder = useMemo(
+    () => ({ by: tagOrderBy, manual: manualTagOrder }),
+    [manualTagOrder, tagOrderBy]
+  )
   const { visibleWorktrees, visibleScope, externalWorktreeCards, rowModel } = useSidebarListModel({
     filterState,
     sortBy,
     groupBy,
     projectOrderBy,
+    tagOrder,
     pinnedDisplayPolicy,
     defaultHostId,
     workspaceStatuses,
@@ -267,6 +274,7 @@ const WorktreeList = React.memo(function WorktreeList({
         groupBy={groupBy}
         pinnedDisplayPolicy={pinnedDisplayPolicy}
         projectOrderBy={projectOrderBy}
+        tagOrder={tagOrder}
         toggleGroup={toggleGroup}
         collapsedGroups={effectiveCollapsedGroups}
         handleCreateForRepo={handleCreateForRepo}

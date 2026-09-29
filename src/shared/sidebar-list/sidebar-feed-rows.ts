@@ -51,6 +51,7 @@ import type {
 import type { SidebarFeedDomains } from './sidebar-feed-domains'
 import { planSidebarRows } from './sidebar-row-plan'
 import type { SortBy } from './smart-sort'
+import type { TagSectionOrder } from './tag-section-order'
 import { selectVisibleSidebarWorktrees } from './visible-worktrees'
 import { isIdleWorkspaceActivity } from './workspace-activity-facts'
 import { prGroupOfReviewFact } from './workspace-review-facts'
@@ -60,6 +61,8 @@ export type SidebarFeedView = {
   groupBy: WorktreeGroupBy
   sortBy: SortBy
   projectOrderBy: ProjectOrderBy
+  /** Tag mode's section order; the phone has no Tag mode and leaves it out. */
+  tagOrder?: TagSectionOrder
   collapsedGroups: ReadonlySet<string>
   filters: WorkspaceRowFilters
   workspaceHostScope: ExecutionHostScope
@@ -248,7 +251,8 @@ export function planSidebarFeedRows(
     hostLabelById: new Map(hostOptions.map((host) => [host.id, host.label])),
     defaultHostId,
     pinnedDisplayPolicy: view.pinnedDisplayPolicy,
-    filterRepoIds: view.filters.filterRepoIds
+    filterRepoIds: view.filters.filterRepoIds,
+    tagOrder: view.tagOrder
   })
   return {
     visibleWorktrees,

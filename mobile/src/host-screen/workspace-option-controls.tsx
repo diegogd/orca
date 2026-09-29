@@ -307,6 +307,8 @@ export const WORKSPACE_OPTION_CONTROLS: Record<WorkspaceViewOptionKey, Workspace
     (controller) => controller.projectOrderBy,
     (controller) => controller.settings.setProjectOrderBy
   ),
+  // Never shown: the phone reads desktop Tag grouping as a flat list, so its context is never Tag.
+  tagOrderBy: { kind: 'inline', framed: false, Row: () => null },
   cardLayout: choicePage(
     WORKSPACE_CARD_LAYOUT_CHOICES,
     (controller) => (controller.state.view.compactWorktreeCards ? 'compact' : 'detailed'),
