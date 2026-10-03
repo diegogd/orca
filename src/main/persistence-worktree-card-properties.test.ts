@@ -365,7 +365,8 @@ describe('Store', () => {
         worktreeCardProperties: ['status', 'unread', 'pr', 'comment', 'ports'],
         _inlineAgentsDefaultedForAllUsers: true,
         _expandedWorktreeCardPropertiesDefaulted: true,
-        _jiraIssueWorktreeCardPropertyDefaulted: true
+        _jiraIssueWorktreeCardPropertyDefaulted: true,
+        _hostWorktreeCardPropertyDefaulted: true
       },
       githubCache: { pr: {}, issue: {} },
       workspaceSession: {}
@@ -415,6 +416,7 @@ describe('Store', () => {
         _inlineAgentsDefaultedForAllUsers: true,
         _expandedWorktreeCardPropertiesDefaulted: true,
         _jiraIssueWorktreeCardPropertyDefaulted: true,
+        _hostWorktreeCardPropertyDefaulted: true,
         _tagsWorktreeCardPropertyDefaulted: true
       },
       githubCache: { pr: {}, issue: {} },
@@ -531,6 +533,7 @@ describe('Store', () => {
         _inlineAgentsDefaultedForAllUsers: true,
         _expandedWorktreeCardPropertiesDefaulted: true,
         _jiraIssueWorktreeCardPropertyDefaulted: true,
+        _tagsWorktreeCardPropertyDefaulted: true,
         _hostWorktreeCardPropertyDefaulted: true
       },
       githubCache: { pr: {}, issue: {} },
