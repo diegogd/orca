@@ -231,9 +231,6 @@ describe('persistWorktreeMeta GitHub PR suppression compatibility', () => {
 })
 
 describe('persistWorktreeMeta tags compatibility', () => {
-  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: getActiveRuntimeTarget is mocked above, so settings are never read.
-  const unusedSettings = {} as never
-
   beforeEach(() => {
     vi.clearAllMocks()
     mocks.target = { kind: 'environment', environmentId: 'env-1' }
@@ -243,9 +240,9 @@ describe('persistWorktreeMeta tags compatibility', () => {
   it('refuses to send tags to a host that would strip them', async () => {
     mocks.assertCapability.mockRejectedValue(new Error('update required'))
 
-    await expect(
-      persistWorktreeMeta(unusedSettings, 'repo::/feature', { tags: [] })
-    ).rejects.toThrow('update required')
+    await expect(persistWorktreeMeta(mocks.target, 'repo::/feature', { tags: [] })).rejects.toThrow(
+      'update required'
+    )
 
     expect(mocks.assertCapability).toHaveBeenCalledWith(
       'env-1',
@@ -256,7 +253,7 @@ describe('persistWorktreeMeta tags compatibility', () => {
   })
 
   it('sends tags to capable hosts', async () => {
-    await persistWorktreeMeta(unusedSettings, 'repo::/feature', { tags: ['billing'] })
+    await persistWorktreeMeta(mocks.target, 'repo::/feature', { tags: ['billing'] })
 
     expect(mocks.callRuntimeRpc).toHaveBeenCalledWith(
       mocks.target,
