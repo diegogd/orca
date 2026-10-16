@@ -45,7 +45,8 @@ type SectionRowsArgs = {
   agentSendTargetWorktreeId?: string | null
   groupBy: WorktreeGroupBy
   projectOrderBy: ProjectOrderBy
-  tagOrder: TagSectionOrder
+  /** Omitted: tag sections sort by name. */
+  tagOrder?: TagSectionOrder
   pinnedDisplayPolicy: PinnedWorktreeDisplayPolicy
   defaultHostId: ExecutionHostId
   worktrees: Worktree[]

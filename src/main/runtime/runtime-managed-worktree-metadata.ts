@@ -22,7 +22,7 @@ import {
 import { RuntimeLineageError } from './runtime-worktree-lineage-resolution'
 import type { ResolvedWorktree } from './runtime-worktree-path-identity'
 
-type Updates = Omit<Partial<WorktreeMeta>, 'pushTarget'> & {
+export type ManagedWorktreeMetaUpdates = Omit<Partial<WorktreeMeta>, 'pushTarget'> & {
   pushTarget?: GitPushTarget | null
   lineage?: { parentWorktree?: string; noParent?: boolean }
   /** Incremental tag edits, applied against the stored tags at write time. */
@@ -40,7 +40,7 @@ type Ports = {
 
 export async function updateRuntimeManagedWorktreeMetadata(args: {
   selector: string
-  updates: Updates
+  updates: ManagedWorktreeMetaUpdates
   store: RuntimeStore
   ports: Ports
 }): Promise<Worktree> {
